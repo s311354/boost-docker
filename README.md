@@ -1,4 +1,5 @@
-## boost-docker ##
+## boost-docker ## 
+[![Docker Image CI](https://github.com/s311354/boost-docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/s311354/boost-docker/actions/workflows/docker-image.yml)
 
 The Dockerfile that setups Ubuntu 16.04 xenial with boost libraries (header only). The C++ Boost libraries are installed under `/usr/local/include/boost/`.
 
