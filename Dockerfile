@@ -12,7 +12,7 @@ ARG CMAKE_VERSION=3.25.1
 RUN apt-get update &&\
     apt-get install -y --no-install-recommends software-properties-common build-essential \
             autoconf libtool pkg-config ca-certificates libssl-dev pkg-config \
-            git wget vim cppman \
+            git wget vim man cppman \
             automake g++ gcc \
             gdb valgrind && \
     apt-get clean
