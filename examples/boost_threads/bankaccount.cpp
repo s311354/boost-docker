@@ -12,12 +12,12 @@ void bankAgent()
 }
 
 void Joe() {
-    for (int i = 18; i > 0; --i) {
+    for (int i = 10; i > 0; --i) {
        // error: void value not ignored as it ought to be
        // int mypocket = JoesAccount.Withdraw(100);
 
        // The correct way
-       JoesAccount.Deposit(100000);
+       JoesAccount.Withdraw(100);
        int mypocket = JoesAccount.GetBalance();
        std::cout << mypocket << std::endl;
     }
