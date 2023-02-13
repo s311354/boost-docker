@@ -23,6 +23,9 @@ ARG NUM_JOBS
 
 ENV NUM_JOBS=${NUM_JOBS}
 
+# Set the LD_LIBRARY_PATH environment variable
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
+
 # Install CMake
 RUN cd /tmp && \
     wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz && \
@@ -48,6 +51,3 @@ RUN cd /tmp && \
 
 RUN echo ${BOOST_ROOT}
 ENTRYPOINT /bin/bash
-
-
-

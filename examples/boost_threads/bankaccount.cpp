@@ -1,5 +1,6 @@
 #include <boost/thread.hpp>
 #include "bankaccount.h"
+#include <iostream>
 
 BankAccount JoesAccount;
 
@@ -11,12 +12,12 @@ void bankAgent()
 }
 
 void Joe() {
-    for (int i = 10; i > 0; --i) {
+    for (int i = 18; i > 0; --i) {
        // error: void value not ignored as it ought to be
        // int mypocket = JoesAccount.Withdraw(100);
 
        // The correct way
-       JoesAccount.Withdraw(100);
+       JoesAccount.Deposit(100000);
        int mypocket = JoesAccount.GetBalance();
        std::cout << mypocket << std::endl;
     }
