@@ -30,4 +30,3 @@ int main() {
     thread2.join();
     return 0;
 }
-
