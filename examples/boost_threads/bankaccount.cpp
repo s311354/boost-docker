@@ -4,6 +4,12 @@
 
 BankAccount JoesAccount;
 
+void ATMWithdrawal(BankAccount& acct, int sum) {
+    //strict_lock<BankAccount> guard(acct); // Hang issue
+    acct.Withdraw(sum);
+    acct.Withdraw(2);
+}
+
 void bankAgent()
 {
     for (int i = 10; i > 0; i --) {
@@ -16,8 +22,10 @@ void Joe() {
        // error: void value not ignored as it ought to be
        // int mypocket = JoesAccount.Withdraw(100);
 
+       ATMWithdrawal(JoesAccount, 100);     
+
        // The correct way
-       JoesAccount.Withdraw(100);
+       // JoesAccount.Withdraw(100);
        int mypocket = JoesAccount.GetBalance();
        std::cout << mypocket << std::endl;
     }
@@ -26,6 +34,7 @@ void Joe() {
 int main() {
     boost::thread thread1(bankAgent); // start concurrent execution of bankAgent
     boost::thread thread2(Joe);       // start concurrent execution of Joe
+
     thread1.join();
     thread2.join();
     return 0;
