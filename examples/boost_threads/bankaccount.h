@@ -2,7 +2,9 @@
 #include <boost/thread/lockable_adapter.hpp>
 #include "externally_locked.h"
 
-#ifdef EXTERNAL_LOCK
+#ifdef EXTERNAL_INTERNAL_LOCK
+// If we want the benefit of internal locking, we simply call Deposit(int) and Withdraw(int)
+// If we want to use external locking, we lock the object by constructing a strict_lock<BankAccount> and then you call Deposit(int, strict_lock<BankAccount>&) and Withdraw(int, strict_lock<BankAccount> &)
 class BankAccount 
 : public boost::basic_lockable_adapter<boost::mutex>  // lockable functions
 {
@@ -38,34 +40,11 @@ class BankAccount
             return balance_;
         }
 };
-
-#elif LOCK_GUARD_LOCKABLE_ADAPTER
-// Internal locking is insufficient for many real-world synchronization tasks.
-// By add lock/unlock functions from outside
-class BankAccount
-: public boost::basic_lockable_adapter<std::mutex> // syntax error: expected template-name before '<' token 
-{
-    int balance_;
-
-    public:
-        void Deposit(int amount) {
-           boost::lock_guard<BankAccount> guard(*this);
-           balance_ += amount;
-        }
-
-        void Withdraw(int amount) {
-           boost::lock_guard<BankAccount> guard(*this);
-           balance_ -= amount;
-        }
-
-        int GetBalance() {
-           boost::lock_guard<BankAccount> guard(*this);
-           return balance_;
-        }
-};
-#elif defined LOCKABLE_ADAPTER
+#elif defined CALLER_ENSURED_LOCK
+// The caller-ensured locking approach is more flexible and most efficient, but very dangerous
+// BankAccount still holds a mutex, but its member functions don't manipulate it at all. Deposit and Withdraw are not thread-safe anymore.
 class BankAccount 
-: public boost::basic_lockable_adapter<std::mutex> // syntac error: expected template-name before '<' token
+: public boost::basic_lockable_adapter<std::mutex>
 {
     int balance_;
 
@@ -87,7 +66,6 @@ class BankAccount
 // This model is quite deadlock-prone when we try to coordinate multi-object transactions.
 // - using synchronization primitives, such as locks
 // - avoid the use of blocking calls, such as sleep in critical sections
-
 class BankAccount {
     boost::mutex mtx_; // explicit mutex declaration
     int balance_;
@@ -118,6 +96,8 @@ class BankAccount {
         }
 };
 #else
+// Internal Locking
+// Use a mutex to guarantee exclusive access to each bank
 class BankAccount {
     boost::mutex mtx_; // explicit mutex declaration
     int balance_;

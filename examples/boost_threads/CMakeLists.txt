@@ -2,7 +2,13 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(BankAccount VERSION 0.0.1 LANGUAGES CXX)
 
-add_definitions(-DEXTERNAL_LOCK)
+# External and internal locking approach 
+add_definitions(-DEXTERNAL_INTERNAL_LOCK)
+# Caller-ensured locking approach
+# add_definitions(-DCALLER_ENSURED_LOCK)
+# Guard's constructor locking approacj
+# add_definitions(-DLOCK_GUARD)
+# Internal locking approach
 
 find_package(Boost REQUIRED COMPONENTS thread)
 
