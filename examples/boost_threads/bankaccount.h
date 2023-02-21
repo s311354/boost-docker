@@ -123,3 +123,23 @@ class BankAccount {
         }
 };
 #endif
+
+// We have access to this BankAccount object only after locking its parent AccountManager object
+class AccountManager
+: public boost::basic_lockable_adapter<boost::mutex>
+{
+    public:
+        typedef boost::basic_lockable_adapter<boost::mutex> lockable_base_type;
+
+        AccountManager() : checkingAcct_(*this), savingsAcct_(*this) {}
+
+        inline void Checking2Savings(int amount);
+        inline void AmoreComplicatedChecking2Savings(int amount);
+
+    private:
+        // a little bridge template externally_locked that controls access to a BankAccount
+        externally_locked<BankAccount, AccountManager> checkingAcct_;
+        externally_locked<BankAccount, AccountManager> savingsAcct_;
+};
+
+
