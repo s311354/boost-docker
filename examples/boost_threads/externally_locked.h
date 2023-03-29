@@ -37,7 +37,7 @@ template <typename T, typename Lockable>
 class externally_locked {
     // This macro is used to check that a given template parameter meets certain requirements of 
     // has certain properties 
-    //BOOST_CONCEPT_ASSERT((boost::LockableConcept<Lockable>));
+    BOOST_CONCEPT_ASSERT((boost::BasicLockable<Lockable>));
 
 public:
     externally_locked(T & obj, Lockable & lockable): obj_(obj), lockable_(lockable) {}
